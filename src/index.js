@@ -72,7 +72,7 @@ export default {
             Accept: "application/json",
             "X-Request-Key": env.LX_REQUEST_KEY,
           },
-          redirect: "error",
+          redirect: "manual",
           signal: AbortSignal.timeout(12000),
         },
       );
