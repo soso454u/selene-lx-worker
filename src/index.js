@@ -94,13 +94,23 @@ export default {
       }
 
       const audio = new URL(data.url);
+
+      // QQ 音乐返回 HTTP 时，尝试切换到 HTTPS。
+      if (
+        audio.protocol === "http:" &&
+        audio.hostname === "ws.stream.qqmusic.qq.com" &&
+        !audio.username &&
+        !audio.password
+      ) {
+        audio.protocol = "https:";
+      }
+
       if (audio.protocol !== "https:" || audio.username || audio.password) {
         return reply({
           code: 502,
           msg: "Invalid audio URL",
           protocol: audio.protocol,
           host: audio.hostname,
-          hasCredentials: Boolean(audio.username || audio.password),
         }, 502);
       }
 
