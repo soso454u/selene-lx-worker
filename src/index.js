@@ -106,7 +106,15 @@ export default {
         expire: data.extra?.expire ?? null,
       });
     } catch (error) {
-      const msg = error?.name === "TimeoutError" ? "Upstream timeout" : "Upstream request failed";
+      console.error("[Selene LX 调试]", {
+        name: error?.name,
+        message: String(error?.message || error)
+          .replaceAll(env.LX_REQUEST_KEY, "[redacted]")
+          .slice(0, 300),
+      });
+      const msg = error?.name === "TimeoutError"
+        ? "Upstream timeout"
+        : "Upstream request failed";
       return reply({ code: 502, msg }, 502);
     }
   },
