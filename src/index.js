@@ -95,7 +95,13 @@ export default {
 
       const audio = new URL(data.url);
       if (audio.protocol !== "https:" || audio.username || audio.password) {
-        return reply({ code: 502, msg: "Invalid audio URL" }, 502);
+        return reply({
+          code: 502,
+          msg: "Invalid audio URL",
+          protocol: audio.protocol,
+          host: audio.hostname,
+          hasCredentials: Boolean(audio.username || audio.password),
+        }, 502);
       }
 
       return reply({
